@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Pola Slot Pragmatic</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+        }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen py-10 px-4">
+
+    <div class="max-w-2xl mx-auto bg-slate-900/80 backdrop-blur-md rounded-2xl p-6 shadow-2xl border border-slate-700">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-amber-400 tracking-wide uppercase">⚡ Pola Generator Pragmatic ⚡</h1>
+            <p class="text-slate-400 text-sm mt-2">Generate 10 pola permainan acak secara instan</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 mb-6">
+            <button onclick="generatePola()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3 px-6 rounded-xl transition duration-200 cursor-pointer text-center shadow-lg shadow-amber-500/20">
+                🔄 Generate Pola Baru
+            </button>
+            <button onclick="salinSemuaPola()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl transition duration-200 cursor-pointer text-center shadow-lg shadow-emerald-600/20">
+                📋 Salin Semua Pola
+            </button>
+        </div>
+
+        <div class="bg-slate-950 rounded-xl p-5 border border-slate-800 font-mono text-sm leading-relaxed whitespace-pre-wrap relative">
+            <div id="toast" class="absolute top-4 right-4 bg-emerald-500 text-slate-950 px-3 py-1 rounded text-xs font-bold hidden transition-opacity">
+                Berhasil Disalin!
+            </div>
+            
+            <div id="konten-pola" class="text-amber-200 select-all">Klik tombol "Generate Pola Baru" untuk memulai.</div>
+        </div>
+    </div>
+
+    <script>
+        // Daftar nama game sesuai request
+        const daftarGame = [
+            "Gates of Olympus", "Starlight Princess", "Gates of Gatot Kaca", "Sweet Bonanza", "Sugar Rush",
+            "Wild West Gold", "The Dog House Megaways", "Madame Destiny Megaways", "Aztec Gems", "Joker's Jewels",
+            "Big Bass Bonanza", "Christmas Big Bass Bonanza", "Big Bass Splash", "Big Bass Amazon Xtreme",
+            "Big Bass Hold & Spinner", "Big Bass Day at the Races", "Big Bass Secrets of the Golden Lake",
+            "Big Bass Floats My Boat", "Bigger Bass Bonanza", "Big Bass Mission Fishin'",
+            "John Hunter and the Tomb of the Scarab Queen", "John Hunter and the Book of Tut", "Book of Golden Sands",
+            "Cleocatra", "Might of Ra", "Eye of Cleopatra", "Sword of Ares", "Rise of Giza PowerNudge",
+            "Gems Bonanza", "Fire In The Hole", "Sweet Bonanza Xmas", "Sugar Rush 1000", "Starlight Princess 1000",
+            "Gates of Olympus 1000", "Fruit Party", "Fruit Party 2", "Candy Village", "Juiced Duo",
+            "Pinup Girls", "Wild Booster", "The Dog House", "Buffalo King Megaways", "Great Rhino Megaways",
+            "5 Lions Megaways", "Chilli Heat", "Wolf Gold", "Wild Wild Riches", "Chicken Drop",
+            "Zombie Carnival", "Extra Juicy Megaways"
+        ];
+
+        // Fungsi acak angka rentang min - max
+        function acakAngka(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // Fungsi acak array (Fisher-Yates) untuk mengambil game unik
+        function ambilGameAcak(arr, jumlah) {
+            let acak = [...arr];
+            for (let i = acak.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [acak[i], acak[j]] = [acak[j], acak[i]];
+            }
+            return acak.slice(0, jumlah);
+        }
+
+        // Fungsi generate pola tunggal
+        function generatePolaSingle() {
+            let hasilPola = "";
+            
+            for (let i = 0; i < 4; i++) {
+                let spinCount = acakAngka(20, 50);
+                
+                // Logika Simbol Turbo (Posisi 1) dan Cepat (Posisi 2) tidak boleh sama
+                let turbo = Math.random() < 0.5 ? "✅" : "❌";
+                let cepat = turbo === "✅" ? "❌" : "✅"; // Memastikan tidak sama dengan turbo
+                let lewati = Math.random() < 0.5 ? "✅" : "❌";
+
+                // Logika DC: 15% ON, 85% OFF (Data request 15% ON, sisanya OFF)
+                let dc = Math.random() < 0.15 ? "(DC-ON)" : "(DC-OFF)";
+
+                hasilPola += `${spinCount}X SPIN ${turbo}${cepat}${lewati} ${dc}\n`;
+            }
+            return hasilPola;
+        }
+
+        // Fungsi utama untuk generate seluruh tampilan
+        function generatePola() {
+            const gameTerpilih = ambilGameAcak(daftarGame, 10);
+            let textOutput = "POLA PRAGMATIC TERBARU\n\n";
+
+            gameTerpilih.forEach((game, index) => {
+                textOutput += `${game.toUpperCase()}\n`;
+                textOutput += generatePolaSingle();
+                
+                // Tambahkan garis pemisah jika bukan elemen terakhir
+                if (index < gameTerpilih.length - 1) {
+                    textOutput += "=========================\n";
+                }
+            });
+
+            textOutput += "\nKeterangan Simbol:\n";
+            textOutput += "✅ = Fitur ON | ❌ = Fitur OFF\n";
+            textOutput += "Urutan Simbol: Spin Turbo, Spin Cepat, Lewati Layar\n";
+            textOutput += "DC (Double Chance): Fitur kesempatan ganda (atau sering disebut Double Chance atau Bet Chance) adalah fitur opsional di mana kamu membayar sedikit biaya tambahan di setiap putaran untuk memperbesar peluang memicu babak bonus (seperti Free Spins atau putaran gratis)..";
+
+            document.getElementById("konten-pola").innerText = textOutput;
+        }
+
+        // Fungsi salin satu kali klik
+        function salinSemuaPola() {
+            const teks = document.getElementById("konten-pola").innerText;
+            
+            if (teks.includes("Klik tombol")) {
+                alert("Silahkan generate pola terlebih dahulu!");
+                return;
+            }
+
+            navigator.clipboard.writeText(teks).then(() => {
+                const toast = document.getElementById("toast");
+                toast.classList.remove("hidden");
+                setTimeout(() => {
+                    toast.classList.add("hidden");
+                }, 2000);
+            }).catch(err => {
+                alert("Gagal menyalin teks: ", err);
+            });
+        }
+
+        // Jalankan generator pertama kali saat halaman dibuka
+        window.onload = generatePola;
+    </script>
+</body>
+</html>
