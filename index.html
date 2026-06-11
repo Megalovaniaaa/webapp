@@ -40,7 +40,7 @@
             </div>
 
         <div id="keterangan-salin" class="hidden">
-===================================
+============================
 KETERANGAN SIMBOL & FITUR :
 Urutan Simbol: [Spin Turbo] [Spin Cepat] [Lewati Layar]
 ✅ : Fitur Hidup (ON)
@@ -48,7 +48,7 @@ Urutan Simbol: [Spin Turbo] [Spin Cepat] [Lewati Layar]
 
 Apa itu DC (Double Chance)?
 Fitur kesempatan ganda opsional dengan membayar sedikit biaya tambahan di setiap putaran untuk memperbesar peluang memicu babak bonus (Free Spins).
-===================================</div>
+============================</div>
     </div>
 
     <script>
@@ -107,7 +107,7 @@ Fitur kesempatan ganda opsional dengan membayar sedikit biaya tambahan di setiap
                 polaSet.add(simbolString);
 
                 // 4. Aturan DC-ON sebesar 15% (85% sisa/90% pembulatan request adalah DC-OFF)
-                const statusDC = Math.random() < 0.15 ? "(DC-ON)" : "(DC-OFF)";
+                const statusDC = Math.random() < 0.35 ? "(DC-ON)" : "(DC-OFF)";
 
                 hasilPola.push({
                     teks: `${jumlahSpin}X SPIN ${simbolString} ${statusDC}`
@@ -139,7 +139,7 @@ Fitur kesempatan ganda opsional dengan membayar sedikit biaya tambahan di setiap
                 });
 
                 // Garis pemisah khusus tanda =
-                const pemisahHTML = index < 9 ? `<p class="text-slate-600 font-mono text-xs mt-3">=</p>` : '';
+                const pemisahHTML = index < 9 ? `<p class="text-slate-600 font-mono text-xs mt-3">============================</p>` : '';
 
                 gameDiv.innerHTML = judulHTML + polaHTML + pemisahHTML;
                 containerWeb.appendChild(gameDiv);
@@ -166,7 +166,7 @@ Fitur kesempatan ganda opsional dengan membayar sedikit biaya tambahan di setiap
 
                 // Jika bukan elemen terakhir, tambahkan tanda pemisah sama dengan (=)
                 if (i < lines.length - 1) {
-                    teksSalin += "=\n";
+                    teksSalin += "============================\n";
                 }
             }
 
